@@ -66,7 +66,7 @@ clientsRouter.delete('/:id', async (request, response) => {
 
   const clientsRepository = getCustomRepository(ClientsRepository);
 
-  await clientsRepository.delete(id);
+  await clientsRepository.softDelete(id);
 
   return response.status(200);
 });

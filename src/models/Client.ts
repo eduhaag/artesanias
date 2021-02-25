@@ -33,7 +33,7 @@ class Client {
   @Column({ name: 'accept_marketing' })
   acceptMarketing: boolean;
 
-  @OneToMany(() => Address, address => address.client)
+  @OneToMany(() => Address, address => address.client, { onDelete: 'CASCADE' })
   adresses: Address[];
 
   @CreateDateColumn({ name: 'created_at' })
