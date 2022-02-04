@@ -4,7 +4,9 @@ import { ensureAuthenticated } from '@shared/infra/http/middlewares/ensureAuthen
 
 import { authenticateRoutes } from './authenticate.routes';
 import { clientsRouter } from './clients.routes';
+import { financialRouter } from './financialRoutes';
 import { productModuleRouter } from './productsRoutes';
+import { salesRouter } from './salesRoutes';
 import { usersRoutes } from './users.routes';
 
 const router = Router();
@@ -17,5 +19,7 @@ router.use(ensureAuthenticated);
 router.use('/users', usersRoutes);
 router.use('/products', productModuleRouter);
 router.use('/clients', clientsRouter);
+router.use('/financial', financialRouter);
+router.use('/sales', salesRouter);
 
 export { router };

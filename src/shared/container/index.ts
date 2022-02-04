@@ -4,6 +4,8 @@ import { AddressRepository } from '@modules/clients/infra/typeorm/repositories/A
 import { ClientsRepository } from '@modules/clients/infra/typeorm/repositories/ClientsRepository';
 import { IAddressRepository } from '@modules/clients/repositories/IAddressRepository';
 import { IClientsRepository } from '@modules/clients/repositories/IClientsRepository';
+import { BankAccountsRepository } from '@modules/financial/infra/typeorm/repositories/BankAccountsRepository';
+import { IBankAccountsRepository } from '@modules/financial/repositories/IBankAccountsRepository';
 import { ProductCategoriesRepository } from '@modules/products/infra/typeorm/repositories/ProductCategoriesRepository';
 import { ProductCompositionsRepository } from '@modules/products/infra/typeorm/repositories/ProductCompositionsRepository';
 import { ProductPicturesRepository } from '@modules/products/infra/typeorm/repositories/ProductPicturesRepository';
@@ -12,6 +14,8 @@ import { IProductCategoriesRepository } from '@modules/products/repositories/IPr
 import { IProductCompositionsRepository } from '@modules/products/repositories/IProductCompositionsRepository';
 import { IProductPicturesRepository } from '@modules/products/repositories/IProductPicturesRepository';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
+import { ShippingMethodsRepository } from '@modules/sales/infra/typeorm/repositories/ShippingMethodsRepository';
+import { IShippingMethodsRepository } from '@modules/sales/repositories/IShippingMethodsRepository';
 import { UsersRepository } from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
 
@@ -55,4 +59,16 @@ container.registerSingleton<IClientsRepository>(
 container.registerSingleton<IAddressRepository>(
   'AddressRepository',
   AddressRepository,
+);
+
+// Bank Account Repository
+container.registerSingleton<IBankAccountsRepository>(
+  'BankAccountsRepository',
+  BankAccountsRepository,
+);
+
+// shipping Method
+container.registerSingleton<IShippingMethodsRepository>(
+  'ShippingMethodsRepository',
+  ShippingMethodsRepository,
 );
