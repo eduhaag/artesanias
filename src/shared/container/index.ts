@@ -14,7 +14,9 @@ import { IProductCategoriesRepository } from '@modules/products/repositories/IPr
 import { IProductCompositionsRepository } from '@modules/products/repositories/IProductCompositionsRepository';
 import { IProductPicturesRepository } from '@modules/products/repositories/IProductPicturesRepository';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
+import { PaymentMethodsRepository } from '@modules/sales/infra/typeorm/repositories/PaymentMethodsRepository';
 import { ShippingMethodsRepository } from '@modules/sales/infra/typeorm/repositories/ShippingMethodsRepository';
+import { IPaymentMethodsRepository } from '@modules/sales/repositories/IPaymentMethodsRepository';
 import { IShippingMethodsRepository } from '@modules/sales/repositories/IShippingMethodsRepository';
 import { UsersRepository } from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
@@ -71,4 +73,9 @@ container.registerSingleton<IBankAccountsRepository>(
 container.registerSingleton<IShippingMethodsRepository>(
   'ShippingMethodsRepository',
   ShippingMethodsRepository,
+);
+
+container.registerSingleton<IPaymentMethodsRepository>(
+  'PaymentMethodsRepository',
+  PaymentMethodsRepository,
 );
