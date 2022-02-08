@@ -1,12 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class createBankAccountsTable1643561321510
-  implements MigrationInterface
-{
+export class createSaleStatusTable1644185219437 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'bank_accounts',
+        name: 'sale_status',
         columns: [
           {
             name: 'id',
@@ -20,9 +18,14 @@ export class createBankAccountsTable1643561321510
             type: 'varchar',
           },
           {
-            name: 'starting_balance',
-            type: 'numeric(12,2)',
-            default: 0.0,
+            name: 'description',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'color',
+            type: 'char(7)',
+            default: '000000',
           },
           {
             name: 'is_fixed',
@@ -39,17 +42,12 @@ export class createBankAccountsTable1643561321510
             type: 'timestamp',
             default: 'now()',
           },
-          {
-            name: 'deleted_at',
-            type: 'timestamp',
-            isNullable: true,
-          },
         ],
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('bank_accounts');
+    await queryRunner.dropTable('sale_status');
   }
 }
