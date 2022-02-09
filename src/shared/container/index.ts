@@ -15,9 +15,11 @@ import { IProductCompositionsRepository } from '@modules/products/repositories/I
 import { IProductPicturesRepository } from '@modules/products/repositories/IProductPicturesRepository';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
 import { PaymentMethodsRepository } from '@modules/sales/infra/typeorm/repositories/PaymentMethodsRepository';
+import { SaleChannelsRepository } from '@modules/sales/infra/typeorm/repositories/SaleChannelsRepository';
 import { SaleStatusRepository } from '@modules/sales/infra/typeorm/repositories/SaleStatusRepository';
 import { ShippingMethodsRepository } from '@modules/sales/infra/typeorm/repositories/ShippingMethodsRepository';
 import { IPaymentMethodsRepository } from '@modules/sales/repositories/IPaymentMethodsRepository';
+import { ISaleChannelsRepository } from '@modules/sales/repositories/ISaleChannelsRepository';
 import { ISaleStatusRepository } from '@modules/sales/repositories/ISaleStatusRepository';
 import { IShippingMethodsRepository } from '@modules/sales/repositories/IShippingMethodsRepository';
 import { UsersRepository } from '@modules/users/infra/typeorm/repositories/UsersRepository';
@@ -85,4 +87,9 @@ container.registerSingleton<IPaymentMethodsRepository>(
 container.registerSingleton<ISaleStatusRepository>(
   'SaleStatusRepository',
   SaleStatusRepository,
+);
+
+container.registerSingleton<ISaleChannelsRepository>(
+  'SaleChannelsRepository',
+  SaleChannelsRepository,
 );
