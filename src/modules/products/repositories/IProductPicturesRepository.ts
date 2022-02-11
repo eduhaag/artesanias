@@ -4,7 +4,7 @@ import { ProductPicture } from '../infra/typeorm/entities/ProductPicture';
 
 interface IProductPicturesRepository {
   listPicturesByProductId(productId: string): Promise<ProductPicture[]>;
-  createPicture(picture: IUploadImageDTO): Promise<ProductPicture>;
+  createPicture({ productId, imageName }: IUploadImageDTO): Promise<void>;
   deletePicture(pictureId: number): Promise<void>;
   findPictureById(pictureId: number): Promise<ProductPicture>;
   findByPrincipal(productId: string): Promise<ProductPicture>;

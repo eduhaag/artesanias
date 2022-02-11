@@ -15,11 +15,11 @@ const deleteImageController = new DeleteImageController();
 const updateImageDataController = new UpdateImageDataController();
 
 picturesRouter.post(
-  '/images',
-  upload.single('file'),
+  '/:productId',
+  upload.array('images'),
   uploadImagesController.handle,
 );
-picturesRouter.delete('/images/:imageId', deleteImageController.handle);
-picturesRouter.put('/images', updateImageDataController.handle);
+picturesRouter.delete('/:imageId', deleteImageController.handle);
+picturesRouter.put('/', updateImageDataController.handle);
 
 export { picturesRouter };

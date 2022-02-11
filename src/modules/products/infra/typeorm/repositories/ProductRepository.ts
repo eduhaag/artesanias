@@ -1,8 +1,11 @@
-import { getRepository, Repository, In } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 
 import { ICreateProductDTO } from '@modules/products/dtos/ICreateProductDTO';
 import { IUpdateProductDTO } from '@modules/products/dtos/IUpdateProductDTO';
-import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
+import {
+  IProductsRepository,
+  IFilter,
+} from '@modules/products/repositories/IProductsRepository';
 
 import { Product } from '../entities/Product';
 
@@ -11,16 +14,6 @@ class ProductsRepository implements IProductsRepository {
 
   constructor() {
     this.repository = getRepository(Product);
-  }
-
-  async listAllByTypes(types: string[]): Promise<Product[]> {
-    const products = await this.repository.find({
-      where: {
-        type: In(types),
-      },
-    });
-
-    return products;
   }
 
   async createProduct({
@@ -59,7 +52,7 @@ class ProductsRepository implements IProductsRepository {
     return product;
   }
 
-  async findById(id: string, relation: string[]): Promise<Product> {
+  async findById(id: string, relation?: string[]): Promise<Product> {
     const product = await this.repository.findOne({
       where: { id },
       relations: relation,
@@ -95,31 +88,37 @@ class ProductsRepository implements IProductsRepository {
     });
   }
 
-  async getAllProductsToSale(category: string): Promise<Product[]> {
-    let products;
+  async listProductsByFilter({
+    name,
+    categoryId,
+    toSale,
+    types,
+  }: IFilter): Promise<Product[]> {
+    const productsQuery = this.repository.createQueryBuilder('p');
 
-    if (category) {
-      products = await this.repository.find({
-        where: { categoryId: category, toSale: true },
-        relations: ['pictures', 'category'],
-      });
-    } else {
-      products = await this.repository.find({
-        where: { toSale: true },
-        relations: ['pictures', 'category'],
+    if (name) {
+      productsQuery.andWhere('p.name like :nameL', {
+        nameL: `%${name}%`,
       });
     }
 
-    return products;
-  }
+    if (categoryId) {
+      productsQuery.andWhere('p.category_id = :category', {
+        category: categoryId,
+      });
+    }
 
-  async listProductsByCategoryId(categoryId: number): Promise<Product[]> {
-    const products = await this.repository.find({
-      where: { categoryId },
-      relations: ['category', 'pictures'],
-    });
+    if (toSale !== undefined) {
+      productsQuery.andWhere('p.to_sale = :toSale', { toSale });
+    }
 
-    return products;
+    if (types) {
+      productsQuery.andWhere('p.type IN(:...types)', { types });
+    }
+
+    const produtcts = await productsQuery.getMany();
+
+    return produtcts;
   }
 }
 

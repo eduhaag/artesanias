@@ -45,12 +45,13 @@ class ProductPicturesRepository implements IProductPicturesRepository {
     return pictures;
   }
 
-  async createPicture(picture: IUploadImageDTO): Promise<ProductPicture> {
-    const newPicture = await this.repository.create(picture);
+  async createPicture({
+    imageName,
+    productId,
+  }: IUploadImageDTO): Promise<void> {
+    const newPicture = this.repository.create({ productId, path: imageName });
 
-    this.repository.save(newPicture);
-
-    return newPicture;
+    await this.repository.save(newPicture);
   }
 }
 

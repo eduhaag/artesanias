@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { ensureAuthenticated } from '@shared/infra/http/middlewares/ensureAuthenticated';
 
+import { ensureAdmin } from '../middlewares/ensureAdmin';
 import { authenticateRoutes } from './authenticate.routes';
 import { clientsRouter } from './clients.routes';
 import { financialRouter } from './financialRoutes';
@@ -16,6 +17,9 @@ router.use(authenticateRoutes);
 
 // Rotas autenticadas
 router.use(ensureAuthenticated);
+
+// Rotas admin
+router.use(ensureAdmin);
 router.use('/users', usersRoutes);
 router.use('/products', productModuleRouter);
 router.use('/clients', clientsRouter);

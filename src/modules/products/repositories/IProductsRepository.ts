@@ -2,15 +2,25 @@ import { ICreateProductDTO } from '../dtos/ICreateProductDTO';
 import { IUpdateProductDTO } from '../dtos/IUpdateProductDTO';
 import { Product } from '../infra/typeorm/entities/Product';
 
-interface IProductsRepository {
-  findByName(name: string): Promise<Product>;
-  findById(id: string, relations: string[]): Promise<Product>;
-  createProduct(product: ICreateProductDTO): Promise<Product>;
-  listAllByTypes(types: string[]): Promise<Product[]>;
-  deleteProduct(id: string): Promise<void>;
-  updateProduct(product: IUpdateProductDTO): Promise<void>;
-  getAllProductsToSale(category?: string): Promise<Product[]>;
-  listProductsByCategoryId(categoryId: number): Promise<Product[]>;
+interface IFilter {
+  name?: string;
+  categoryId?: number;
+  toSale?: boolean;
+  types?: string[];
 }
 
-export { IProductsRepository };
+interface IProductsRepository {
+  findByName(name: string): Promise<Product>;
+  findById(id: string, relations?: string[]): Promise<Product>;
+  createProduct(product: ICreateProductDTO): Promise<Product>;
+  deleteProduct(id: string): Promise<void>;
+  updateProduct(product: IUpdateProductDTO): Promise<void>;
+  listProductsByFilter({
+    name,
+    categoryId,
+    toSale,
+    types,
+  }: IFilter): Promise<Product[]>;
+}
+
+export { IProductsRepository, IFilter };

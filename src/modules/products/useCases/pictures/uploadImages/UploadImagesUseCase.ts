@@ -1,10 +1,13 @@
 import { inject, injectable } from 'tsyringe';
 
-import { IUploadImageDTO } from '@modules/products/dtos/IUploadImageDTO';
-import { ProductPicture } from '@modules/products/infra/typeorm/entities/ProductPicture';
 import { IProductPicturesRepository } from '@modules/products/repositories/IProductPicturesRepository';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
 import { AppError } from '@shared/errors/AppError';
+
+interface IRequest {
+  productId: string;
+  images: string[];
+}
 
 @injectable()
 class UploadImagesUseCase {
@@ -16,7 +19,7 @@ class UploadImagesUseCase {
     private productPicturesRepository: IProductPicturesRepository,
   ) {}
 
-  async execute({ path, productId }: IUploadImageDTO): Promise<ProductPicture> {
+  async execute({ images, productId }: IRequest): Promise<void> {
     const checkProductExists = await this.productsRepository.findById(
       productId,
     );
@@ -25,12 +28,12 @@ class UploadImagesUseCase {
       throw new AppError('Product does not exists.');
     }
 
-    const image = await this.productPicturesRepository.createPicture({
-      path,
-      productId,
+    images.map(async imageName => {
+      await this.productPicturesRepository.createPicture({
+        productId,
+        imageName,
+      });
     });
-
-    return image;
   }
 }
 

@@ -1,6 +1,6 @@
 interface IUploadImageDTO {
   productId: string;
-  path: string;
+  imageName: string;
 }
 
 export { IUploadImageDTO };
