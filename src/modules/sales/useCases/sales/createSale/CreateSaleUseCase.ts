@@ -1,7 +1,7 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-constant-condition */
 /* eslint-disable no-param-reassign */
-import { inject, injectable } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
 
 import { IClientsRepository } from '@modules/clients/repositories/IClientsRepository';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
@@ -11,6 +11,7 @@ import { IPaymentMethodsRepository } from '@modules/sales/repositories/IPaymentM
 import { ISaleChannelsRepository } from '@modules/sales/repositories/ISaleChannelsRepository';
 import { ISalesRepository } from '@modules/sales/repositories/ISalesRepository';
 import { IShippingMethodsRepository } from '@modules/sales/repositories/IShippingMethodsRepository';
+import { MovesStock } from '@modules/sales/utils/movesStock';
 import { AppError } from '@shared/errors/AppError';
 
 @injectable()
@@ -139,6 +140,13 @@ class CreateSaleUseCase {
           history: 'Pedido criado.',
         },
       ],
+    });
+
+    const movesStock = container.resolve(MovesStock);
+
+    await movesStock.addStockMovimentsBySale({
+      saleId: sale.id,
+      products: sale.products,
     });
 
     return sale;

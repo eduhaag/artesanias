@@ -21,6 +21,7 @@ interface IProductsRepository {
     toSale,
     types,
   }: IFilter): Promise<Product[]>;
+  getMaterialToInventory(productsIds: string[]): Promise<Product[]>;
 }
 
 export { IProductsRepository, IFilter };

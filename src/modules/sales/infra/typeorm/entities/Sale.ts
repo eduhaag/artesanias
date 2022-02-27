@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { Client } from '@modules/clients/infra/typeorm/entities/Client';
+import { InventoryMoviment } from '@modules/products/infra/typeorm/entities/InventoryMoviment';
 
 import { PaymentMethod } from './PaymentMethod';
 import { SaleChannel } from './SaleChannel';
@@ -109,6 +110,9 @@ class Sale {
     cascade: ['insert', 'update'],
   })
   history: SaleHistory[];
+
+  @OneToMany(() => InventoryMoviment, inventory => inventory.sale)
+  inventory: InventoryMoviment;
 
   @CreateDateColumn()
   created_at: Date;

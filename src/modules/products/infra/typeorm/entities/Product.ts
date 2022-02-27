@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
+import { InventoryMoviment } from './InventoryMoviment';
 import { ProductCategory } from './ProductCategory';
 import { ProductComposition } from './ProductComposition';
 import { ProductPicture } from './ProductPicture';
@@ -53,6 +54,9 @@ class Product {
 
   @OneToMany(() => ProductPicture, picture => picture.product)
   pictures: ProductPicture[];
+
+  @OneToMany(() => InventoryMoviment, inventory => inventory.material)
+  inventory: InventoryMoviment[];
 
   @OneToMany(() => ProductComposition, composition => composition.product, {
     cascade: ['insert'],

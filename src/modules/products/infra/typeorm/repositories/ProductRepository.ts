@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, In, Repository } from 'typeorm';
 
 import { ICreateProductDTO } from '@modules/products/dtos/ICreateProductDTO';
 import { IUpdateProductDTO } from '@modules/products/dtos/IUpdateProductDTO';
@@ -119,6 +119,15 @@ class ProductsRepository implements IProductsRepository {
     const produtcts = await productsQuery.getMany();
 
     return produtcts;
+  }
+
+  async getMaterialToInventory(productsIds: string[]): Promise<Product[]> {
+    const products = await this.repository.find({
+      where: { id: In(productsIds) },
+      relations: ['composition', 'composition.material'],
+    });
+
+    return products;
   }
 }
 

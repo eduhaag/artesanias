@@ -86,10 +86,12 @@ class UpdateSaleUseCase {
       throw new AppError('Sale status does not found.', 404);
     }
 
-    await this.SalesHistoryRepository.createHistory(
-      id,
-      `Status do pedido atualizado para ${saleStatusExists.name}.`,
-    );
+    if (statusId && statusId !== checkSaleExists.statusId) {
+      await this.SalesHistoryRepository.createHistory(
+        id,
+        `Status do pedido atualizado para ${saleStatusExists.name}.`,
+      );
+    }
 
     await this.SaleRepository.updateSale({
       id,
