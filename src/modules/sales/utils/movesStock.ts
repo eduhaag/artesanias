@@ -53,10 +53,27 @@ class MovesStock {
         );
 
         if (materialIndex >= 0) {
-          moviments[materialIndex].quantity +=
-            product.quantity * material.quantity;
-          moviments[materialIndex].coast +=
-            product.quantity * material.quantity * material.material.coast;
+          const lastQuantity = parseFloat(
+            moviments[materialIndex].quantity.toString(),
+          );
+
+          const newquantity =
+            parseFloat(product.quantity.toString()) *
+            parseFloat(material.quantity.toString());
+
+          moviments[materialIndex].quantity = lastQuantity + newquantity;
+
+          const lastCoast = parseFloat(
+            moviments[materialIndex].coast.toString(),
+          );
+          const newCoast = parseFloat(
+            (
+              product.quantity *
+              material.quantity *
+              material.material.coast
+            ).toString(),
+          );
+          moviments[materialIndex].coast = lastCoast + newCoast;
         } else {
           const moviment = {
             materialId: material.materialId,
@@ -87,6 +104,55 @@ class MovesStock {
 
     // salva os novos movimentos no banco
     this.inventoryRepository.createInventoryMoviment(newMoviments);
+  }
+
+  async removeStockMovimentBySaleProduct(
+    saleId: number,
+    product: SaleProduct,
+  ): Promise<void> {
+    // Busca o produto com suas composições no banco de dados
+    const productsWithCompositions =
+      await this.productsRepository.getMaterialToInventory([product.productId]);
+
+    // separa a composição do produto
+    const compositions = productsWithCompositions.map(item => {
+      return item.composition;
+    });
+
+    // Busca movimentos ja existente desta venda
+    const moviments: IInventoryMovimentDTO[] =
+      await this.inventoryRepository.getInventoryBySale(saleId);
+
+    compositions[0].forEach(composition => {
+      const movimentIndex = moviments.findIndex(
+        moviment => moviment.materialId === composition.materialId,
+      );
+
+      // se encontrou nos movimentos do pedido, faz o acerto
+      if (movimentIndex >= 0) {
+        // acerta quantidade
+        const oldQuantity = parseFloat(
+          moviments[movimentIndex].quantity.toString(),
+        );
+        const quantityToReduce = parseFloat(composition.quantity.toString());
+        moviments[movimentIndex].quantity = oldQuantity - quantityToReduce;
+
+        // acerta o custo
+        const materialCoast = parseFloat(composition.material.coast.toString());
+        const newCoast = moviments[movimentIndex].quantity * materialCoast;
+        moviments[movimentIndex].coast = newCoast;
+      }
+    });
+
+    // faz update nos movimentos no BD
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const moviment of moviments) {
+      if (moviment.quantity > 0) {
+        this.inventoryRepository.updateInvetoryMoviment(moviment);
+      } else {
+        this.inventoryRepository.deleteMovimentInventory(moviment.id);
+      }
+    }
   }
 }
 

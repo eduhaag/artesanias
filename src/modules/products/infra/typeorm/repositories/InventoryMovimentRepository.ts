@@ -11,6 +11,15 @@ class InventoryMovimentRepository implements IInventoryRepository {
   constructor() {
     this.repository = getRepository(InventoryMoviment);
   }
+  async getMovimentById(id: number): Promise<InventoryMoviment> {
+    const moviment = await this.repository.findOne(id);
+
+    return moviment;
+  }
+
+  async deleteMovimentInventory(movimentIds: number): Promise<void> {
+    await this.repository.delete(movimentIds);
+  }
 
   async createInventoryMoviment(
     moviments: IInventoryMovimentDTO[],

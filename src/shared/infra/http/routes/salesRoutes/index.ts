@@ -8,6 +8,7 @@ import { UpdateSaleStatusController } from '@modules/sales/useCases/sales/update
 
 import { paymentRouter } from './paymentMethods.routes';
 import { saleChannelsRouter } from './saleChannel.routes';
+import { saleProductsRouter } from './saleProducts.routes';
 import { saleStatusRouter } from './saleStatus.routes';
 import { shippingRouter } from './shippingMethods.routes';
 
@@ -23,6 +24,7 @@ salesRouter.use('/shipping_methods', shippingRouter);
 salesRouter.use('/payment_methods', paymentRouter);
 salesRouter.use('/sale_status', saleStatusRouter);
 salesRouter.use('/sale_channels', saleChannelsRouter);
+salesRouter.use('/products', saleProductsRouter);
 
 salesRouter.post('/', createSaleController.handle);
 salesRouter.put('/', updateSaleController.handle);

@@ -51,7 +51,7 @@ class UpdateSaleController {
       statusId,
     });
 
-    return res.send();
+    return res.status(204).send();
   }
 }
 

@@ -22,14 +22,14 @@ class SaleProduct {
 
   @ManyToOne(() => Sale)
   @JoinColumn({ name: 'sale_id' })
-  sale: Sale;
+  sale?: Sale;
 
   @Column({ name: 'product_id' })
   productId: string;
 
   @ManyToOne(() => Product)
   @JoinColumn({ name: 'product_id' })
-  product: Product;
+  product?: Product;
 
   @Column()
   quantity: number;
@@ -47,10 +47,10 @@ class SaleProduct {
   discount?: number;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at?: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at?: Date;
 }
 
 export { SaleProduct };

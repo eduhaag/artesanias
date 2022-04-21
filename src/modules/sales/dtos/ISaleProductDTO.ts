@@ -1,7 +1,7 @@
 interface ISaleProductDTO {
   id?: number;
-  saleId: string;
-  productId: string;
+  saleId?: number;
+  productId?: string;
   quantity: number;
   theme?: string;
   observations?: string;
