@@ -5,6 +5,7 @@ import './SaleModuleContainer';
 import './ProductsModuleContainer';
 import './ClientsModuleContainer';
 import './FinancialModuleContainer';
+import './PurchasesModuleContainer';
 
 import { UsersRepository } from '@modules/users/infra/typeorm/repositories/UsersRepository';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
