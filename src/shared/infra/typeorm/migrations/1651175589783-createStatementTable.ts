@@ -43,10 +43,6 @@ export class createFinancialExtractTable1651175589783
             isNullable: true,
           },
           {
-            name: 'type',
-            type: 'varchar',
-          },
-          {
             name: 'description',
             type: 'varchar',
           },

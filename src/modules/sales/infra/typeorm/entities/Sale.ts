@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { Client } from '@modules/clients/infra/typeorm/entities/Client';
+import { Statement } from '@modules/financial/infra/typeorm/entities/Statement';
 import { InventoryMoviment } from '@modules/products/infra/typeorm/entities/InventoryMoviment';
 
 import { PaymentMethod } from './PaymentMethod';
@@ -101,6 +102,9 @@ class Sale {
   @Column({ name: 'shipping_coast' })
   shippingCoast?: number;
 
+  @Column()
+  installments?: number;
+
   @OneToMany(() => SaleProduct, product => product.sale, {
     cascade: ['insert'],
   })
@@ -113,6 +117,11 @@ class Sale {
 
   @OneToMany(() => InventoryMoviment, inventory => inventory.sale)
   inventory: InventoryMoviment;
+
+  @OneToMany(() => Statement, statement => statement.sale, {
+    cascade: ['insert', 'recover', 'remove', 'soft-remove'],
+  })
+  statements: Statement[];
 
   @CreateDateColumn()
   created_at: Date;

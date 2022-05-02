@@ -2,10 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+
+import { Purchase } from './Purchase';
 
 @Entity('suppliers')
 class Supplier {
@@ -23,6 +26,9 @@ class Supplier {
 
   @Column()
   phone?: string;
+
+  @OneToMany(() => Purchase, purchase => purchase.supplier)
+  purchases: Purchase[];
 
   @CreateDateColumn()
   created_at: Date;

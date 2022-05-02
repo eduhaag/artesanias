@@ -36,7 +36,9 @@ class Client {
   @Column({ name: 'accept_marketing' })
   acceptMarketing?: boolean;
 
-  @OneToMany(() => Address, address => address.client, { cascade: ['insert'] })
+  @OneToMany(() => Address, address => address.client, {
+    cascade: ['insert', 'remove', 'soft-remove', 'recover'],
+  })
   addresses: Address[];
 
   @CreateDateColumn()

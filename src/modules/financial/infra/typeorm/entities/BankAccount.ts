@@ -3,9 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { Statement } from './Statement';
 
 @Entity('bank_accounts')
 class BankAccount {
@@ -20,6 +23,9 @@ class BankAccount {
 
   @Column({ name: 'is_fixed' })
   isFixed?: boolean;
+
+  @OneToMany(() => Statement, statement => statement.bankAccount)
+  statements: Statement[];
 
   @CreateDateColumn()
   created_at: Date;

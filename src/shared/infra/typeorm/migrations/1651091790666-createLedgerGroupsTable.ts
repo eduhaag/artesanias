@@ -22,7 +22,7 @@ export class createLedgerGroupsTable1651091790666
           },
           {
             name: 'type',
-            type: 'varchar',
+            type: 'int',
           },
           {
             name: 'sequence',
