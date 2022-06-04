@@ -25,28 +25,28 @@ class Statement {
 
   @ManyToOne(() => Sale)
   @JoinColumn({ name: 'sale_id' })
-  sale: Sale;
+  sale?: Sale;
 
   @Column({ name: 'purchase_id' })
   purchaseId?: string;
 
   @ManyToOne(() => Purchase)
   @JoinColumn({ name: 'purchase_id' })
-  purchase: Purchase;
+  purchase?: Purchase;
 
   @Column({ name: 'ledger_id' })
   ledgerId: number;
 
   @ManyToOne(() => Ledger)
   @JoinColumn({ name: 'ledger_id' })
-  ledger: Ledger;
+  ledger?: Ledger;
 
   @Column({ name: 'bank_account_id' })
   bankAccountId: number;
 
   @ManyToOne(() => BankAccount)
   @JoinColumn({ name: 'bank_account_id' })
-  bankAccount: BankAccount;
+  bankAccount?: BankAccount;
 
   @Column({ name: 'to_fulfilled' })
   toFulfilled: Date;
@@ -61,10 +61,10 @@ class Statement {
   value: number;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_at?: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updated_at?: Date;
 
   constructor() {
     if (!this.id) {

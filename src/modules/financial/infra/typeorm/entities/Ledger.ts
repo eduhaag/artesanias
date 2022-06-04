@@ -31,6 +31,9 @@ class Ledger {
   @Column()
   type: 1 | -1;
 
+  @Column()
+  isFixed?: boolean;
+
   @OneToMany(() => Statement, statement => statement.ledger)
   statements: Statement[];
 

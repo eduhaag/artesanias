@@ -1,4 +1,5 @@
 import { Client } from '@modules/clients/infra/typeorm/entities/Client';
+import { Statement } from '@modules/financial/infra/typeorm/entities/Statement';
 
 import { SaleHistory } from '../infra/typeorm/entities/SaleHistory';
 import { SaleProduct } from '../infra/typeorm/entities/SaleProduct';
@@ -26,6 +27,7 @@ interface ISaleDTO {
   shippingCoast?: number;
   history?: SaleHistory[];
   products?: SaleProduct[];
+  statements?: Statement[];
 }
 
 interface ISaleFilterDTO {

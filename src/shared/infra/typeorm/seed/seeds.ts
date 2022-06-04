@@ -76,9 +76,9 @@ async function create() {
       if (elements[0].count == 0) {
         await connection
           .query(
-            `INSERT INTO ledgers(description, ledger_group_id, type)
-            VALUES ('Recebimento venda', 2, 1), ('Frete recebido', 5, 1), ('Frete pago', 5, -1),
-            ('Taxa operadora venda', 3, -1), ('Taxa operadora frete', 5, -1)
+            `INSERT INTO ledgers(description, ledger_group_id, type, is_fixed)
+            VALUES ('Recebimento venda', 2, 1, true), ('Frete recebido', 5, 1, true), ('Frete pago', 5, -1, true),
+            ('Taxa operadora venda', 3, -1, true), ('Taxa operadora frete', 5, -1, true)
           `,
           )
           .then(() => console.log('Ledgers created'))

@@ -1,11 +1,15 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-constant-condition */
 /* eslint-disable no-param-reassign */
+import dayjs from 'dayjs';
 import { container, inject, injectable } from 'tsyringe';
 
 import { IClientsRepository } from '@modules/clients/repositories/IClientsRepository';
+import { Statement } from '@modules/financial/infra/typeorm/entities/Statement';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
+import { IPaymentMethodsDTO } from '@modules/sales/dtos/IPaymentMethodsDTO';
 import { ISaleDTO } from '@modules/sales/dtos/ISaleDTO';
+import { ISaleProductDTO } from '@modules/sales/dtos/ISaleProductDTO';
 import { Sale } from '@modules/sales/infra/typeorm/entities/Sale';
 import { IPaymentMethodsRepository } from '@modules/sales/repositories/IPaymentMethodsRepository';
 import { ISaleChannelsRepository } from '@modules/sales/repositories/ISaleChannelsRepository';
@@ -13,6 +17,90 @@ import { ISalesRepository } from '@modules/sales/repositories/ISalesRepository';
 import { IShippingMethodsRepository } from '@modules/sales/repositories/IShippingMethodsRepository';
 import { MovesStock } from '@modules/sales/utils/movesStock';
 import { AppError } from '@shared/errors/AppError';
+
+import config from '../../../../../../config.json';
+
+interface IFinancialGeneration {
+  paymentMethod: IPaymentMethodsDTO;
+  saledProducts: ISaleProductDTO[];
+  discount: number;
+  shippingCoast: number;
+  addition: number;
+}
+
+function financialEntriesGeneration({
+  paymentMethod,
+  saledProducts,
+  discount,
+  shippingCoast,
+  addition,
+}: IFinancialGeneration): Statement[] {
+  const dateToFulfilled = dayjs().add(paymentMethod.creditTime, 'd').toDate();
+  const { destinationAccount } = paymentMethod;
+
+  const productsValue = saledProducts.reduce((acc, saleProduct) => {
+    const { price, quantity, discount = 0 } = saleProduct;
+    return acc + (price - discount) * quantity;
+  }, 0);
+
+  const totalValue = productsValue + addition - discount;
+  const fixedRate =
+    totalValue && shippingCoast
+      ? paymentMethod.fixRate / 2
+      : paymentMethod.fixRate;
+
+  const entries: Statement[] = [];
+
+  // cria o recebimento da venda de produtos
+  if (totalValue && totalValue > 0) {
+    entries.push({
+      toFulfilled: dateToFulfilled,
+      bankAccountId: destinationAccount,
+      ledgerId: config.fixed_ledges.salesReceipt,
+      value: totalValue,
+      description: 'Recebimento: Venda',
+    });
+
+    const saleTax =
+      parseFloat(
+        (totalValue * paymentMethod.variableRate + fixedRate).toFixed(2),
+      ) * -1;
+
+    entries.push({
+      toFulfilled: dateToFulfilled,
+      bankAccountId: destinationAccount,
+      ledgerId: config.fixed_ledges.saleTax,
+      value: saleTax,
+      description: 'Taxa: Venda',
+    });
+  }
+
+  // cria o recebimento do frete
+  if (shippingCoast && shippingCoast > 0) {
+    entries.push({
+      toFulfilled: dateToFulfilled,
+      bankAccountId: destinationAccount,
+      ledgerId: config.fixed_ledges.shippingReceipt,
+      value: shippingCoast,
+      description: 'Recebimento: Frete',
+    });
+
+    const shippingTax =
+      parseFloat(
+        (shippingCoast * paymentMethod.variableRate + fixedRate).toFixed(2),
+      ) * -1;
+
+    entries.push({
+      toFulfilled: dateToFulfilled,
+      bankAccountId: destinationAccount,
+      ledgerId: config.fixed_ledges.shippingTax,
+      value: shippingTax,
+      description: 'Taxa: Frete',
+    });
+  }
+
+  return entries;
+}
 
 @injectable()
 class CreateSaleUseCase {
@@ -115,6 +203,14 @@ class CreateSaleUseCase {
       }
     }
 
+    const financialEntries = financialEntriesGeneration({
+      addition,
+      discount,
+      paymentMethod: paymentMethodExists,
+      saledProducts: products,
+      shippingCoast,
+    });
+
     // cria o pedido
     const sale = await this.SalesRepository.createSale({
       client,
@@ -140,6 +236,7 @@ class CreateSaleUseCase {
           history: 'Pedido criado.',
         },
       ],
+      statements: financialEntries,
     });
 
     const movesStock = container.resolve(MovesStock);

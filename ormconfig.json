@@ -5,9 +5,9 @@
   "username":"docker",
   "password":"artesanias",
   "database":"artesanias",
-  "migrations": ["@shared/infra/typeorm/migrations/*.ts"],
-  "entities": ["@modules/**/entities/*.ts"],
+  "migrations": ["src/shared/infra/typeorm/migrations/*.ts"],
+  "entities": ["src/modules/**/entities/*.ts"],
   "cli": {
-    "migrationsDir": "@shared/infra/typeorm/migrations"
+    "migrationsDir": "src/shared/infra/typeorm/migrations"
   }
 }

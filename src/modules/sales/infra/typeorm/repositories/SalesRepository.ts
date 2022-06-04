@@ -32,6 +32,7 @@ class SalesRepository implements ISalesRepository {
     products,
     zipCode,
     history,
+    statements,
   }: ISaleDTO): Promise<Sale> {
     const sale = this.repository.create({
       client,
@@ -54,6 +55,7 @@ class SalesRepository implements ISalesRepository {
       shippingCoast,
       products,
       history,
+      statements,
     });
 
     await this.repository.save(sale);
