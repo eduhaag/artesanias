@@ -18,12 +18,6 @@ class LedgerGroup {
   @Column()
   description?: string;
 
-  @Column()
-  type: 1 | -1;
-
-  @Column()
-  sequence?: number;
-
   @OneToMany(() => Ledger, ledger => ledger.ledgerGroup)
   ledgers: Ledger;
 

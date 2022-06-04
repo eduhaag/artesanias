@@ -24,7 +24,6 @@ interface ISaleDTO {
   discount?: number;
   addition?: number;
   shippingCoast?: number;
-  installments?: number;
   history?: SaleHistory[];
   products?: SaleProduct[];
 }

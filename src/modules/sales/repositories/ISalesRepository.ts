@@ -20,7 +20,6 @@ interface ISalesRepository {
     street,
     products,
     zipCode,
-    installments,
   }: ISaleDTO): Promise<Sale>;
   updateSale({
     id,
@@ -38,7 +37,6 @@ interface ISalesRepository {
     shippingCoast,
     state,
     street,
-    installments,
     zipCode,
     statusId,
     invoiceId,

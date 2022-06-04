@@ -102,9 +102,6 @@ class Sale {
   @Column({ name: 'shipping_coast' })
   shippingCoast?: number;
 
-  @Column()
-  installments?: number;
-
   @OneToMany(() => SaleProduct, product => product.sale, {
     cascade: ['insert'],
   })

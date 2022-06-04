@@ -21,15 +21,6 @@ export class createLedgerGroupsTable1651091790666
             isNullable: true,
           },
           {
-            name: 'type',
-            type: 'int',
-          },
-          {
-            name: 'sequence',
-            type: 'int',
-            isUnique: true,
-          },
-          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

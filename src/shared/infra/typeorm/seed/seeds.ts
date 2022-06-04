@@ -51,6 +51,41 @@ async function create() {
       }
     });
 
+  // Ledger Groups
+  await connection
+    .query('SELECT COUNT(id) FROM ledger_groups')
+    .then(async elements => {
+      if (elements[0].count == 0) {
+        await connection
+          .query(
+            `INSERT INTO ledger_groups(description)
+          VALUES ('Receita op. bruta'), ('Deduções da receita bruta'), ('Custos das vendas'), 
+          ('Despesas operacionais'), ('Despesas financeiras liquidas'), ('Receitas não operacionais')
+        `,
+          )
+          .then(() => console.log('Ledger groups created'))
+          .catch(e => console.log(e));
+      }
+    });
+
+  // ledgers
+  // Ledger Groups
+  await connection
+    .query('SELECT COUNT(id) FROM ledgers')
+    .then(async elements => {
+      if (elements[0].count == 0) {
+        await connection
+          .query(
+            `INSERT INTO ledgers(description, ledger_group_id, type)
+            VALUES ('Recebimento venda', 2, 1), ('Frete recebido', 5, 1), ('Frete pago', 5, -1),
+            ('Taxa operadora venda', 3, -1), ('Taxa operadora frete', 5, -1)
+          `,
+          )
+          .then(() => console.log('Ledgers created'))
+          .catch(e => console.log(e));
+      }
+    });
+
   await connection.close();
 }
 
