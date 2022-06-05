@@ -23,10 +23,9 @@ class DeleteBankAccountUseCase {
       throw new AppError('This bank account can not be deleted.');
     }
 
-    /*
-      ---Criar regra para verificar saldo disponivel, somente permitir exclusão
-         da conta com saldo zerado
-    */
+    if (accountInDb.balance !== 0) {
+      throw new AppError('This bank account balance is different of 0.', 403);
+    }
 
     await this.BankAccountsRepository.deleteBankAccount(id);
   }

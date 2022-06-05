@@ -10,4 +10,18 @@ interface IStatmentsDTO {
   value: number;
 }
 
-export { IStatmentsDTO };
+interface IStatementsFilterDTO {
+  toFulfilled?: {
+    from: Date;
+    to: Date;
+  };
+  fulfilledOn?: {
+    from: Date;
+    to: Date;
+  };
+  description?: string;
+  ledger?: number[];
+  bankAccount?: number[];
+}
+
+export { IStatmentsDTO, IStatementsFilterDTO };

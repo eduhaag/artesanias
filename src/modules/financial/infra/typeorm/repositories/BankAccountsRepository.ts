@@ -42,7 +42,22 @@ class BankAccountsRepository implements IBankAccountsRepository {
   }
 
   async getBankAccountById(id: number): Promise<BankAccount> {
-    const account = await this.repository.findOne(id);
+    const account = await this.repository.findOne({
+      where: { id },
+      relations: ['statements'],
+    });
+
+    const balance = account.statements.reduce((acc, statement) => {
+      const { value, fulfilledOn } = statement;
+      let sum = 0;
+      if (fulfilledOn) {
+        sum = acc + parseFloat(value.toString());
+      }
+
+      return sum;
+    }, 0);
+
+    account.balance = balance + parseFloat(account.startingBalance.toString());
 
     return account;
   }

@@ -24,8 +24,12 @@ class BankAccount {
   @Column({ name: 'is_fixed' })
   isFixed?: boolean;
 
-  @OneToMany(() => Statement, statement => statement.bankAccount)
+  @OneToMany(() => Statement, statement => statement.bankAccount, {
+    cascade: ['remove', 'soft-remove', 'recover'],
+  })
   statements: Statement[];
+
+  balance?: number;
 
   @CreateDateColumn()
   created_at: Date;
