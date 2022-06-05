@@ -16,6 +16,7 @@ export class createLedgersTable1651175140487 implements MigrationInterface {
           {
             name: 'ledger_group_id',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'description',

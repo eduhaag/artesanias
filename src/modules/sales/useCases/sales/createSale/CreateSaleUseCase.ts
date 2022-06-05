@@ -66,13 +66,15 @@ function financialEntriesGeneration({
         (totalValue * paymentMethod.variableRate + fixedRate).toFixed(2),
       ) * -1;
 
-    entries.push({
-      toFulfilled: dateToFulfilled,
-      bankAccountId: destinationAccount,
-      ledgerId: config.fixed_ledges.saleTax,
-      value: saleTax,
-      description: 'Taxa: Venda',
-    });
+    if (saleTax > 0) {
+      entries.push({
+        toFulfilled: dateToFulfilled,
+        bankAccountId: destinationAccount,
+        ledgerId: config.fixed_ledges.saleTax,
+        value: saleTax,
+        description: 'Taxa: Venda',
+      });
+    }
   }
 
   // cria o recebimento do frete
@@ -90,13 +92,15 @@ function financialEntriesGeneration({
         (shippingCoast * paymentMethod.variableRate + fixedRate).toFixed(2),
       ) * -1;
 
-    entries.push({
-      toFulfilled: dateToFulfilled,
-      bankAccountId: destinationAccount,
-      ledgerId: config.fixed_ledges.shippingTax,
-      value: shippingTax,
-      description: 'Taxa: Frete',
-    });
+    if (shippingTax > 0) {
+      entries.push({
+        toFulfilled: dateToFulfilled,
+        bankAccountId: destinationAccount,
+        ledgerId: config.fixed_ledges.shippingTax,
+        value: shippingTax,
+        description: 'Taxa: Frete',
+      });
+    }
   }
 
   return entries;

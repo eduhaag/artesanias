@@ -31,7 +31,7 @@ class Ledger {
   @Column()
   type: 1 | -1;
 
-  @Column()
+  @Column({ name: 'is_fixed' })
   isFixed?: boolean;
 
   @OneToMany(() => Statement, statement => statement.ledger)
