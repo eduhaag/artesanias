@@ -47,17 +47,20 @@ class BankAccountsRepository implements IBankAccountsRepository {
       relations: ['statements'],
     });
 
-    const balance = account.statements.reduce((acc, statement) => {
-      const { value, fulfilledOn } = statement;
-      let sum = 0;
-      if (fulfilledOn) {
-        sum = acc + parseFloat(value.toString());
-      }
+    let balance;
+    if (account) {
+      balance = account.statements.reduce((acc, statement) => {
+        const { value, fulfilledOn } = statement;
+        let sum = 0;
+        if (fulfilledOn) {
+          sum = acc + parseFloat(value.toString());
+        }
 
-      return sum;
-    }, 0);
-
-    account.balance = balance + parseFloat(account.startingBalance.toString());
+        return sum;
+      }, 0);
+      account.balance =
+        balance + parseFloat(account.startingBalance.toString());
+    }
 
     return account;
   }

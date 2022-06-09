@@ -5,8 +5,8 @@ import { ISaleProductDTO } from '@modules/sales/dtos/ISaleProductDTO';
 import { SaleProduct } from '@modules/sales/infra/typeorm/entities/SaleProduct';
 import { ISaleProductsRepository } from '@modules/sales/repositories/ISaleProductsRepository';
 import { ISalesRepository } from '@modules/sales/repositories/ISalesRepository';
-import { MovesStock } from '@modules/sales/utils/movesStock';
 import { AppError } from '@shared/errors/AppError';
+import { MovesStock } from '@utils/movesStock';
 
 @injectable()
 class CreateSaleProductUseCase {

@@ -166,7 +166,7 @@ class SalesRepository implements ISalesRepository {
         end: sendDateTo,
       });
     }
-    console.log(salesQuery.getSql(), salesQuery.getQueryAndParameters());
+
     const sales = await salesQuery.getMany();
 
     return sales;

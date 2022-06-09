@@ -3,8 +3,8 @@ import { container, inject, injectable } from 'tsyringe';
 import { ISaleProductDTO } from '@modules/sales/dtos/ISaleProductDTO';
 import { SaleProduct } from '@modules/sales/infra/typeorm/entities/SaleProduct';
 import { ISaleProductsRepository } from '@modules/sales/repositories/ISaleProductsRepository';
-import { MovesStock } from '@modules/sales/utils/movesStock';
 import { AppError } from '@shared/errors/AppError';
+import { MovesStock } from '@utils/movesStock';
 
 @injectable()
 class UpdateSaleProductUseCase {

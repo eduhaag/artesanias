@@ -21,6 +21,10 @@ class InventoryMovimentRepository implements IInventoryRepository {
     await this.repository.delete(movimentIds);
   }
 
+  async removeMovimentByIds(ids: number[]): Promise<void> {
+    await this.repository.delete(ids);
+  }
+
   async createInventoryMoviment(
     moviments: IInventoryMovimentDTO[],
   ): Promise<void> {
@@ -52,6 +56,14 @@ class InventoryMovimentRepository implements IInventoryRepository {
 
   async getInventoryBySale(saleId: number): Promise<InventoryMoviment[]> {
     const moviments = await this.repository.find({ where: { saleId } });
+
+    return moviments;
+  }
+
+  async getMovimentsByPurchase(
+    purchaseId: string,
+  ): Promise<InventoryMoviment[]> {
+    const moviments = await this.repository.find({ where: { purchaseId } });
 
     return moviments;
   }

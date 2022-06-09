@@ -1,10 +1,12 @@
+/* eslint-disable no-restricted-syntax */
 import { inject, injectable } from 'tsyringe';
 
 import { IInventoryMovimentDTO } from '@modules/products/dtos/IIventoryMovimentDTO';
 import { IInventoryRepository } from '@modules/products/repositories/IInventoryRepository';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
+import { PurchaseProduct } from '@modules/purchases/infra/typeorm/entities/PurchaseProduct';
 
-import { SaleProduct } from '../infra/typeorm/entities/SaleProduct';
+import { SaleProduct } from '../modules/sales/infra/typeorm/entities/SaleProduct';
 
 interface IMovesFromSale {
   saleId: number;
@@ -153,6 +155,43 @@ class MovesStock {
         this.inventoryRepository.deleteMovimentInventory(moviment.id);
       }
     }
+  }
+
+  async addStockMovimentByPurchase(products: PurchaseProduct[]): Promise<void> {
+    const stockMoviments: IInventoryMovimentDTO[] = [];
+
+    for await (const purchaseProduct of products) {
+      const { product, productId, quantity, price, purchaseId } =
+        purchaseProduct;
+      if (product.movesStock) {
+        stockMoviments.push({
+          materialId: productId,
+          quantity,
+          coast: quantity * price,
+          type: 'E',
+          purchaseId,
+          history: `Compra #${productId}`,
+        });
+      }
+    }
+
+    await this.inventoryRepository.createInventoryMoviment(stockMoviments);
+  }
+
+  async removeStockMovimentByPurchase(purchaseId: string): Promise<void> {
+    const moviments = await this.inventoryRepository.getMovimentsByPurchase(
+      purchaseId,
+    );
+
+    let movimentsToRemove;
+
+    if (moviments.length > 0) {
+      movimentsToRemove = moviments.map(moviment => {
+        return moviment.id;
+      });
+    }
+
+    await this.inventoryRepository.removeMovimentByIds(movimentsToRemove);
   }
 }
 

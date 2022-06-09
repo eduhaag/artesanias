@@ -12,6 +12,7 @@ import { v4 as uuid } from 'uuid';
 
 import { Statement } from '@modules/financial/infra/typeorm/entities/Statement';
 
+import { PurchaseProduct } from './PurchaseProduct';
 import { Supplier } from './Supplier';
 
 @Entity('purchases')
@@ -22,7 +23,7 @@ class Purchase {
   @Column({ name: 'supplier_id' })
   supplierId: string;
 
-  @ManyToOne(() => Supplier)
+  @ManyToOne(() => Supplier, { cascade: ['insert'] })
   @JoinColumn({ name: 'supplier_id' })
   supplier: Supplier;
 
@@ -51,6 +52,11 @@ class Purchase {
     cascade: ['insert', 'remove', 'soft-remove', 'recover'],
   })
   statements: Statement[];
+
+  @OneToMany(() => PurchaseProduct, product => product.purchase, {
+    cascade: ['insert', 'update'],
+  })
+  products: PurchaseProduct[];
 
   @CreateDateColumn()
   created_at: Date;

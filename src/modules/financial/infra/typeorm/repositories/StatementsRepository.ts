@@ -56,7 +56,6 @@ class StatementsRepository implements IStatementsRepository {
     fulfilledOn,
     toFulfilled,
   }: IStatementsFilterDTO): Promise<Statement[]> {
-    console.log(fulfilledOn);
     const statmentsQuery = this.repository
       .createQueryBuilder('s')
       .leftJoinAndSelect('s.ledger', 'ledger')
@@ -94,7 +93,6 @@ class StatementsRepository implements IStatementsRepository {
       });
     }
 
-    console.log(statmentsQuery.getSql(), statmentsQuery.getParameters());
     const statements = statmentsQuery.getMany();
 
     return statements;

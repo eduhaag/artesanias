@@ -15,8 +15,8 @@ import { IPaymentMethodsRepository } from '@modules/sales/repositories/IPaymentM
 import { ISaleChannelsRepository } from '@modules/sales/repositories/ISaleChannelsRepository';
 import { ISalesRepository } from '@modules/sales/repositories/ISalesRepository';
 import { IShippingMethodsRepository } from '@modules/sales/repositories/IShippingMethodsRepository';
-import { MovesStock } from '@modules/sales/utils/movesStock';
 import { AppError } from '@shared/errors/AppError';
+import { MovesStock } from '@utils/movesStock';
 
 import config from '../../../../../../config.json';
 

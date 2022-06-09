@@ -31,7 +31,7 @@ class InventoryMoviment {
   sale: Sale;
 
   @Column({ name: 'purchase_id' })
-  purchaseId?: number;
+  purchaseId?: string;
 
   @Column()
   type: string;
