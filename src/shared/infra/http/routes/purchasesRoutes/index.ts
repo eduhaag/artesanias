@@ -6,6 +6,7 @@ import { ListPurchasesController } from '@modules/purchases/useCases/purchases/l
 import { UpdatePurchaseController } from '@modules/purchases/useCases/purchases/updatePurchase/UpdatePurchaseController';
 import { ChangeStatusPurchaseController } from '@modules/purchases/useCases/purchases/updateStatus/ChangeStatusPurchaseController';
 
+import { purchaseProductsRoutes } from './purchaseProducts.routes';
 import { suppliersRouter } from './suppliers.routes';
 
 const purchasesRouter = Router();
@@ -17,6 +18,7 @@ const updatePurchaseController = new UpdatePurchaseController();
 const changeStatusPurchaseController = new ChangeStatusPurchaseController();
 
 purchasesRouter.use('/suppliers', suppliersRouter);
+purchasesRouter.use('/products', purchaseProductsRoutes);
 
 purchasesRouter.post('/', createPurchaseController.handle);
 purchasesRouter.get('/', listPurchasesController.handle);

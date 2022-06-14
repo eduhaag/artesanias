@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { GetAddressByPostalCodeController } from '@modules/cep/GetAddressByPostalCodeController';
 import { ensureAuthenticated } from '@shared/infra/http/middlewares/ensureAuthenticated';
 
 import { ensureAdmin } from '../middlewares/ensureAdmin';
@@ -12,6 +13,8 @@ import { salesRouter } from './salesRoutes';
 import { usersRoutes } from './users.routes';
 
 const router = Router();
+
+const getAddressByPostalCodeController = new GetAddressByPostalCodeController();
 
 // Rota de login
 router.use(authenticateRoutes);
@@ -27,5 +30,7 @@ router.use('/clients', clientsRouter);
 router.use('/financial', financialRouter);
 router.use('/sales', salesRouter);
 router.use('/purchases', purchasesRouter);
+
+router.get('/cep/:cep', getAddressByPostalCodeController.handle);
 
 export { router };

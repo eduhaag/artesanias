@@ -6,17 +6,10 @@ import { GetProductByIdUseCase } from './GetProductByIdUseCase';
 class GetProductByIdController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const { relations } = request.query;
-
-    let relationsParsed;
-
-    if (relations) {
-      relationsParsed = relations.toString().replace(/ /g, '').split(',');
-    }
 
     const getProductByIdUseCase = container.resolve(GetProductByIdUseCase);
 
-    const product = await getProductByIdUseCase.execute(id, relationsParsed);
+    const product = await getProductByIdUseCase.execute(id);
 
     return response.json(product);
   }

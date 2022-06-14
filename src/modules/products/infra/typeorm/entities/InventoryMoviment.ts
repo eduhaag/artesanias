@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { Purchase } from '@modules/purchases/infra/typeorm/entities/Purchase';
 import { Sale } from '@modules/sales/infra/typeorm/entities/Sale';
 
 import { Product } from './Product';
@@ -29,6 +30,10 @@ class InventoryMoviment {
   @ManyToOne(() => Sale)
   @JoinColumn({ name: 'sale_id' })
   sale: Sale;
+
+  @ManyToOne(() => Purchase)
+  @JoinColumn({ name: 'purchase_id' })
+  purchase: Purchase;
 
   @Column({ name: 'purchase_id' })
   purchaseId?: string;

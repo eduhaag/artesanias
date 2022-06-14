@@ -26,7 +26,7 @@ export class createInvetoryMovimentTable1645729572672
           },
           {
             name: 'purchase_id',
-            type: 'varchar',
+            type: 'uuid',
             isNullable: true,
           },
           {

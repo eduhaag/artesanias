@@ -52,11 +52,23 @@ class ProductsRepository implements IProductsRepository {
     return product;
   }
 
-  async findById(id: string, relation?: string[]): Promise<Product> {
+  async findById(id: string): Promise<Product> {
     const product = await this.repository.findOne({
       where: { id },
-      relations: relation,
+      relations: ['category', 'pictures', 'inventory', 'composition'],
     });
+
+    let stock = 0;
+
+    if (product && product.inventory.length > 0) {
+      stock = product.inventory.reduce((acc, moviment) => {
+        const { quantity } = moviment;
+
+        return acc + parseFloat(quantity.toString());
+      }, 0);
+
+      product.stock = stock;
+    }
 
     return product;
   }
@@ -94,7 +106,11 @@ class ProductsRepository implements IProductsRepository {
     toSale,
     types,
   }: IFilter): Promise<Product[]> {
-    const productsQuery = this.repository.createQueryBuilder('p');
+    const productsQuery = this.repository
+      .createQueryBuilder('p')
+      .leftJoin('p.inventory', 'i')
+      .addSelect('SUM(i.quantity)', 'stock')
+      .groupBy('p.id');
 
     if (name) {
       productsQuery.andWhere('p.name like :nameL', {
@@ -116,7 +132,7 @@ class ProductsRepository implements IProductsRepository {
       productsQuery.andWhere('p.type IN(:...types)', { types });
     }
 
-    const produtcts = await productsQuery.getMany();
+    const produtcts = await productsQuery.getRawMany();
 
     return produtcts;
   }

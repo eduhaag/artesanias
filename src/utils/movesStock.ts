@@ -40,7 +40,7 @@ class MovesStock {
     const moviments: IInventoryMovimentDTO[] =
       await this.inventoryRepository.getInventoryBySale(saleId);
 
-    // Faz um laço na lista de productos vendidos
+    // Faz um laço na lista de produtos vendidos
     products.forEach(product => {
       // busca a composição do produto na lista retornada no banco
       const materials = productsWithCompositions.find(
@@ -61,29 +61,34 @@ class MovesStock {
 
           const newquantity =
             parseFloat(product.quantity.toString()) *
-            parseFloat(material.quantity.toString());
+            parseFloat(material.quantity.toString()) *
+            -1;
 
           moviments[materialIndex].quantity = lastQuantity + newquantity;
 
           const lastCoast = parseFloat(
             moviments[materialIndex].coast.toString(),
           );
-          const newCoast = parseFloat(
-            (
-              product.quantity *
-              material.quantity *
-              material.material.coast
-            ).toString(),
-          );
+          const newCoast =
+            parseFloat(
+              (
+                product.quantity *
+                material.quantity *
+                material.material.coast
+              ).toString(),
+            ) * -1;
           moviments[materialIndex].coast = lastCoast + newCoast;
-        } else {
+        } else if (material.material.movesStock) {
           const moviment = {
             materialId: material.materialId,
             saleId,
             type: 'S',
-            quantity: product.quantity * material.quantity,
+            quantity: product.quantity * material.quantity * -1,
             coast:
-              product.quantity * material.quantity * material.material.coast,
+              product.quantity *
+              material.quantity *
+              material.material.coast *
+              -1,
             history: `Consumido no pedido #${saleId}`,
           };
           moviments.push(moviment);
@@ -137,7 +142,7 @@ class MovesStock {
           moviments[movimentIndex].quantity.toString(),
         );
         const quantityToReduce = parseFloat(composition.quantity.toString());
-        moviments[movimentIndex].quantity = oldQuantity - quantityToReduce;
+        moviments[movimentIndex].quantity = oldQuantity + quantityToReduce;
 
         // acerta o custo
         const materialCoast = parseFloat(composition.material.coast.toString());

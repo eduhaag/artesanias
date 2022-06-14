@@ -18,6 +18,9 @@ interface IInventoryRepository {
   getMovimentById(id: number): Promise<InventoryMoviment>;
   removeMovimentByIds(ids: number[]): Promise<void>;
   getMovimentsByPurchase(purchaseId: string): Promise<InventoryMoviment[]>;
+  updateInventoryByMaterialArray(
+    moviments: IInventoryMovimentDTO[],
+  ): Promise<void>;
 }
 
 export { IInventoryRepository };

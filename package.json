@@ -10,6 +10,7 @@
     "seed": "ts-node-dev src/shared/infra/typeorm/seed/seeds.ts"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.10.7",
     "express": "^4.17.1",

@@ -67,6 +67,12 @@ class InventoryMovimentRepository implements IInventoryRepository {
 
     return moviments;
   }
+
+  async updateInventoryByMaterialArray(
+    moviments: IInventoryMovimentDTO[],
+  ): Promise<void> {
+    await this.repository.save(moviments);
+  }
 }
 
 export { InventoryMovimentRepository };

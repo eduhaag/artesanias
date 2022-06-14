@@ -11,6 +11,7 @@ import {
 import { v4 as uuid } from 'uuid';
 
 import { Statement } from '@modules/financial/infra/typeorm/entities/Statement';
+import { InventoryMoviment } from '@modules/products/infra/typeorm/entities/InventoryMoviment';
 
 import { PurchaseProduct } from './PurchaseProduct';
 import { Supplier } from './Supplier';
@@ -57,6 +58,9 @@ class Purchase {
     cascade: ['insert', 'update'],
   })
   products: PurchaseProduct[];
+
+  @OneToMany(() => InventoryMoviment, inventory => inventory.purchase)
+  inventory: InventoryMoviment;
 
   @CreateDateColumn()
   created_at: Date;

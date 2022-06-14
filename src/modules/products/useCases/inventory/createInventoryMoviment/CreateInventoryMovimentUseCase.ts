@@ -32,7 +32,7 @@ class CreateInvetoryMovimentUseCase {
       throw new AppError('Material does not found.', 404);
     }
 
-    if (quantity <= 0) {
+    if (quantity === 0) {
       throw new AppError('Quantity invalid.', 400);
     }
 

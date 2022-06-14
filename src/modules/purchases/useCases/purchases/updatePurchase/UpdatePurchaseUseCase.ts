@@ -26,6 +26,13 @@ class UpdatePurchaseUseCase {
       throw new AppError('Purchase does not found', 404);
     }
 
+    if (
+      checkPurchaseExists.status === 'Finalizado' ||
+      checkPurchaseExists.status === 'Cancelado'
+    ) {
+      throw new AppError('Is not possible modify this purchase.');
+    }
+
     await this.PurchasesRepository.updatePurchase({
       id,
       invoice,

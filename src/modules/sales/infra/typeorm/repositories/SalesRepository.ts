@@ -118,6 +118,7 @@ class SalesRepository implements ISalesRepository {
         'products',
         'products.product',
         'statements',
+        'inventory',
       ],
     });
 

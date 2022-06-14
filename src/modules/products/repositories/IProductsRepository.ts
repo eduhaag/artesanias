@@ -11,7 +11,7 @@ interface IFilter {
 
 interface IProductsRepository {
   findByName(name: string): Promise<Product>;
-  findById(id: string, relations?: string[]): Promise<Product>;
+  findById(id: string): Promise<Product>;
   createProduct(product: ICreateProductDTO): Promise<Product>;
   deleteProduct(id: string): Promise<void>;
   updateProduct(product: IUpdateProductDTO): Promise<void>;

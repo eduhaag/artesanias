@@ -66,7 +66,13 @@ class PurchasesRepository implements IPurchasesRepository {
 
   async getById(id: string): Promise<Purchase> {
     const purchase = await this.repository.findOne(id, {
-      relations: ['supplier', 'products', 'products.product', 'statements'],
+      relations: [
+        'supplier',
+        'products',
+        'products.product',
+        'statements',
+        'inventory',
+      ],
     });
 
     return purchase;

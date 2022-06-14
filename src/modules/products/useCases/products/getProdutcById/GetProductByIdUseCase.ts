@@ -10,8 +10,8 @@ class GetProductByIdUseCase {
     private productsRepository: IProductsRepository,
   ) {}
 
-  async execute(id: string, relations: string[]): Promise<Product> {
-    const product = await this.productsRepository.findById(id, relations);
+  async execute(id: string): Promise<Product> {
+    const product = await this.productsRepository.findById(id);
 
     return product;
   }

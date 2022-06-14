@@ -63,6 +63,8 @@ class Product {
   })
   composition: ProductComposition[];
 
+  stock: number;
+
   @CreateDateColumn()
   created_at: Date;
 
