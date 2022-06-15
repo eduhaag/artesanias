@@ -33,7 +33,7 @@ class RefreshTokensRepository implements IRefreshTokensRepository {
     refreshToken: string,
   ): Promise<UserToken> {
     const tokens = await this.repository.findOne({
-      where: { userId, refreshToken },
+      where: [{ userId }, { refreshToken }],
     });
 
     return tokens;

@@ -64,7 +64,7 @@ class AuthenticateUserUseCase {
       },
     );
 
-    const refreshToken = sign({ userMail: user.email }, secret_refresh_token, {
+    const refreshToken = sign({ userName: user.name }, secret_refresh_token, {
       expiresIn: `${expires_refresh_token}d`,
       subject: user.id,
     });
