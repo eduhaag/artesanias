@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { inject, injectable } from 'tsyringe';
 
+import config from '@config/config.json';
 import { Statement } from '@modules/financial/infra/typeorm/entities/Statement';
 import { IBankAccountsRepository } from '@modules/financial/repositories/IBankAccountsRepository';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
@@ -11,8 +12,6 @@ import { IPurchasesRepository } from '@modules/purchases/repositories/IPurchases
 import { ISuppliersRepository } from '@modules/purchases/repositories/ISuppliersRepository';
 import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProveider';
 import { AppError } from '@shared/errors/AppError';
-
-import config from '../../../../../../config.json';
 
 interface IFinancialGeneration {
   installments: number;

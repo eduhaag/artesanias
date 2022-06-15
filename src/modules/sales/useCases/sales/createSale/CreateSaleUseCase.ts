@@ -4,6 +4,7 @@
 import dayjs from 'dayjs';
 import { container, inject, injectable } from 'tsyringe';
 
+import config from '@config/config.json';
 import { IClientsRepository } from '@modules/clients/repositories/IClientsRepository';
 import { Statement } from '@modules/financial/infra/typeorm/entities/Statement';
 import { IProductsRepository } from '@modules/products/repositories/IProductsRepository';
@@ -17,8 +18,6 @@ import { ISalesRepository } from '@modules/sales/repositories/ISalesRepository';
 import { IShippingMethodsRepository } from '@modules/sales/repositories/IShippingMethodsRepository';
 import { AppError } from '@shared/errors/AppError';
 import { MovesStock } from '@utils/movesStock';
-
-import config from '../../../../../../config.json';
 
 interface IFinancialGeneration {
   paymentMethod: IPaymentMethodsDTO;

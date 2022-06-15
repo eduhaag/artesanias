@@ -2,7 +2,10 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
 
+import auth from '@config/auth';
+import { IRefreshTokensRepository } from '@modules/users/repositories/IRefreshTokensRepository';
 import { IUsersRepository } from '@modules/users/repositories/IUsersRepository';
+import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProveider';
 import { AppError } from '@shared/errors/AppError';
 
 interface IRequest {
@@ -16,6 +19,7 @@ interface IResponse {
     email: string;
   };
   token: string;
+  refreshToken: string;
 }
 
 @injectable()
@@ -23,10 +27,22 @@ class AuthenticateUserUseCase {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('RefreshTokensRepository')
+    private RefreshTokensRepository: IRefreshTokensRepository,
+
+    @inject('DateProvider')
+    private DateProvider: IDateProvider,
   ) {}
 
   async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
+    const {
+      expires_in_token,
+      expires_refresh_token,
+      secret_refresh_token,
+      secret_token,
+    } = auth;
 
     if (!user) {
       throw new AppError('Email or password incorrect.', 401);
@@ -41,12 +57,23 @@ class AuthenticateUserUseCase {
       {
         userName: user.name,
       },
-      '1b5275d7e35547fa96cc2500a9c445dc',
+      secret_token,
       {
         subject: user.id,
-        expiresIn: '1d',
+        expiresIn: expires_in_token,
       },
     );
+
+    const refreshToken = sign({ userMail: user.email }, secret_refresh_token, {
+      expiresIn: `${expires_refresh_token}d`,
+      subject: user.id,
+    });
+
+    await this.RefreshTokensRepository.create({
+      userId: user.id,
+      refreshToken,
+      expiresDate: this.DateProvider.addDays(new Date(), expires_refresh_token),
+    });
 
     const tokenReturn: IResponse = {
       token,
@@ -54,6 +81,7 @@ class AuthenticateUserUseCase {
         name: user.name,
         email: user.email,
       },
+      refreshToken,
     };
 
     return tokenReturn;

@@ -5,10 +5,10 @@ import { injectable } from 'tsyringe';
 class GetAddressByPostalCodeUseCase {
   async execute(cep: string): Promise<any> {
     const api = axios.create({
-      baseURL: 'https://viacep.com.br/ws',
+      baseURL: `https://viacep.com.br/ws/`,
     });
 
-    const response = await api.get(`/${cep}/json`);
+    const response = await api.get(`${cep}/json`);
 
     return response.data;
   }

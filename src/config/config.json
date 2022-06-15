@@ -1,0 +1,10 @@
+{
+  "fixed_ledges":{
+    "salesReceipt": 6,
+    "shippingReceipt": 7,
+    "saleTax": 9,
+    "shippingTax": 10,
+    "materialLedger": 15,
+    "packingLedger": 16
+  }
+}
