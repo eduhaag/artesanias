@@ -16,7 +16,7 @@
  <a href="#-sobre-o-projeto">Sobre</a> •
   <a href="#-funcionalidades">Funcionalidades</a> •
  <a href="#-esquema-do-banco-de-dados">Esquema do banco de dados</a> • 
- <a href="#-tecnologias">Tecnologias</a> • 
+ <a href="#-tecnologias-utilizadas">Tecnologias</a> • 
  <a href="#-como-contribuir-para-o-projeto">Como contribuir</a> • 
  <a href="#-licença">Licença</a>
   
